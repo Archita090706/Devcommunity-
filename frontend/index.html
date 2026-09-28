@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevCommunity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authSection" class="auth-page">
+  <div class="center-box glass-panel">
+    <div class="logo-container">
+      <div class="logo-icon">🚀</div>
+      <h2>DevCommunity</h2>
+    </div>
+
+    <div id="registerForm">
+      <div class="input-group">
+        <label for="regUser">Username</label>
+        <input id="regUser" placeholder="Enter your username">
+      </div>
+      <div class="input-group">
+        <label for="regPass">Password</label>
+        <input id="regPass" type="password" placeholder="Enter your password">
+      </div>
+      <button class="primary-btn" onclick="register()">Register</button>
+      <div class="auth-switch">
+        <span>Already have an account?</span>
+        <button class="text-btn" onclick="showLogin()">Log in</button>
+      </div>
+    </div>
+
+    <div id="loginForm" class="hidden">
+      <div class="input-group">
+        <label for="logUser">Username</label>
+        <input id="logUser" placeholder="Enter your username">
+      </div>
+      <div class="input-group">
+        <label for="logPass">Password</label>
+        <input id="logPass" type="password" placeholder="Enter your password">
+      </div>
+      <button class="primary-btn" onclick="login()">Login</button>
+      <div class="auth-switch">
+        <span>New to DevCommunity?</span>
+        <button class="text-btn" onclick="showRegister()">Create account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+  <nav class="navbar glass-panel">
+    <div class="nav-brand">
+      <span class="logo-icon-small">🚀</span>
+      <h3>DevCommunity</h3>
+    </div>
+    <div class="nav-actions">
+      <span id="navProfileName" class="user-badge"></span>
+      <button class="secondary-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar glass-panel">
+      <nav class="side-nav">
+        <button class="nav-item active" onclick="showSection('feed', this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Feed
+        </button>
+        <button class="nav-item" onclick="showSection('create', this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Create Post
+        </button>
+        <button class="nav-item" onclick="showSection('chatSection', this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          Chat
+        </button>
+        <button class="nav-item" onclick="showSection('profile', this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Profile
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div id="feed" class="section active fade-in">
+        <div class="section-header">
+          <h2>Community Feed</h2>
+          <p>See what developers are talking about</p>
+        </div>
+        <div id="posts" class="posts-grid"></div>
+      </div>
+
+      <div id="create" class="section fade-in">
+         <div class="section-header">
+          <h2>Create New Post</h2>
+          <p>Share your knowledge with the community</p>
+        </div>
+        <div class="create-form glass-panel">
+          <div class="input-group">
+            <label for="title">Post Title</label>
+            <input id="title" placeholder="e.g. Just discovered a new CSS trick!">
+          </div>
+          <div class="input-group">
+            <label for="content">Content</label>
+            <textarea id="content" rows="6" placeholder="Write your thoughts here..."></textarea>
+          </div>
+          <button class="primary-btn" onclick="createPost()">Publish Post</button>
+        </div>
+      </div>
+
+      <div id="profile" class="section fade-in">
+        <div class="profile-header glass-panel">
+          <div class="avatar-large" id="profileAvatar"></div>
+          <div>
+            <h2 id="profileName"></h2>
+            <p id="profileBio" class="text-muted">Software Developer</p>
+            <button class="text-btn text-small mt-2" onclick="editProfile()">Edit Profile</button>
+          </div>
+        </div>
+
+        <div id="editProfileForm" class="glass-panel mt-4 hidden" style="padding: 1.5rem; border-radius: 1rem;">
+          <h3 style="margin-bottom: 1rem;">Edit Profile</h3>
+          <div class="input-group">
+            <label for="bioInput">Bio</label>
+            <input id="bioInput" type="text" placeholder="Enter your bio">
+          </div>
+          <div class="input-group">
+            <label for="skillsInput">Skills (comma separated)</label>
+            <input id="skillsInput" type="text" placeholder="e.g. JavaScript, React, CSS">
+          </div>
+          <div style="display: flex; gap: 0.5rem;" class="mt-2">
+            <button class="primary-btn" style="width: auto;" onclick="saveProfile()">Save</button>
+            <button class="secondary-btn" style="width: auto;" onclick="cancelEditProfile()">Cancel</button>
+          </div>
+        </div>
+
+        <div class="skills-container mt-4" id="profileSkills">
+           <!-- Skills will be rendered here -->
+        </div>
+
+        <h3 class="mt-4">My Posts</h3>
+        <div id="myPosts" class="posts-grid mt-2"></div>
+      </div>
+
+      <div id="chatSection" class="section fade-in">
+        <div class="section-header">
+          <h2>Developer Chat</h2>
+          <p>Real-time discussions</p>
+        </div>
+        <div class="chat-container glass-panel">
+          <div id="chat" class="chat-messages">
+             <div class="message system-message">Welcome to the global chat!</div>
+          </div>
+          <div class="chat-input-area">
+            <input id="message" placeholder="Type a message..." onkeypress="handleChatKeyPress(event)">
+            <button class="primary-btn icon-btn" onclick="sendMessage()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+let username = "";
+let userProfile = {
+  bio: "Software Developer",
+  skills: ["HTML", "CSS", "JavaScript"]
+};
+let posts = [];
+let postIdCounter = 1;
+
+// DOM Elements
+const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
+const logUser = document.getElementById("logUser");
+const regUser = document.getElementById("regUser");
+const authSection = document.getElementById("authSection");
+const dashboard = document.getElementById("dashboard");
+const profileName = document.getElementById("profileName");
+const navProfileName = document.getElementById("navProfileName");
+const profileAvatar = document.getElementById("profileAvatar");
+const postsContainer = document.getElementById("posts");
+const titleInput = document.getElementById("title");
+const contentInput = document.getElementById("content");
+const chatContainer = document.getElementById("chat");
+const messageInput = document.getElementById("message");
+
+/* AUTH SWITCH */
+function showLogin() {
+  registerForm.classList.add("hidden");
+  loginForm.classList.remove("hidden");
+}
+
+function showRegister() {
+  loginForm.classList.add("hidden");
+  registerForm.classList.remove("hidden");
+}
+
+/* LOGIN */
+function login() {
+  if(!logUser.value.trim()) return alert("Please enter a username");
+  username = logUser.value;
+  completeLogin();
+}
+
+function register() {
+  if(!regUser.value.trim()) return alert("Please enter a username");
+  username = regUser.value;
+  completeLogin();
+}
+
+function completeLogin() {
+  authSection.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+  
+  profileName.innerText = username;
+  navProfileName.innerText = username;
+  profileAvatar.innerText = username.charAt(0).toUpperCase();
+  document.getElementById("profileBio").innerText = userProfile.bio;
+  renderSkills();
+  
+  // Add some dummy initial posts if empty
+  if(posts.length === 0) {
+    posts.push({
+      id: postIdCounter++,
+      author: "System",
+      title: "Welcome to DevCommunity!",
+      content: "This is a new platform for developers to connect, share knowledge, and collaborate. 🚀",
+      time: "just now",
+      likes: 0,
+      comments: []
+    });
+  }
+  renderFeed();
+}
+
+/* PROFILE LOGIC */
+function editProfile() {
+  document.getElementById('editProfileForm').classList.remove('hidden');
+  document.getElementById('bioInput').value = userProfile.bio;
+  document.getElementById('skillsInput').value = userProfile.skills.join(', ');
+}
+
+function cancelEditProfile() {
+  document.getElementById('editProfileForm').classList.add('hidden');
+}
+
+function saveProfile() {
+  userProfile.bio = document.getElementById('bioInput').value;
+  const skillsStr = document.getElementById('skillsInput').value;
+  userProfile.skills = skillsStr.split(',').map(s => s.trim()).filter(s => s);
+  
+  document.getElementById('profileBio').innerText = userProfile.bio;
+  renderSkills();
+  cancelEditProfile();
+}
+
+function renderSkills() {
+  const skillsContainer = document.getElementById('profileSkills');
+  skillsContainer.innerHTML = '';
+  userProfile.skills.forEach(skill => {
+    const span = document.createElement('span');
+    span.className = 'skill-badge';
+    span.innerText = skill;
+    skillsContainer.appendChild(span);
+  });
+}
+
+/* LOGOUT */
+function logout() {
+  dashboard.classList.add("hidden");
+  authSection.classList.remove("hidden");
+  logUser.value = "";
+  document.getElementById("logPass").value = "";
+}
+
+/* SECTION SWITCH */
+function showSection(id, btnElement) {
+  document.querySelectorAll(".section").forEach(s => {
+    s.classList.remove("active");
+  });
+  
+  document.getElementById(id).classList.add("active");
+  
+  if (btnElement) {
+    document.querySelectorAll(".nav-item").forEach(btn => btn.classList.remove("active"));
+    btnElement.classList.add("active");
+  }
+
+  if (id === 'profile') {
+    renderMyPosts();
+  }
+}
+
+/* POSTS */
+function createPost() {
+  if(!titleInput.value.trim() || !contentInput.value.trim()) return;
+  
+  const newPost = {
+    id: postIdCounter++,
+    author: username,
+    title: titleInput.value,
+    content: contentInput.value,
+    time: "just now",
+    likes: 0,
+    comments: []
+  };
+
+  posts.unshift(newPost);
+  
+  titleInput.value = "";
+  contentInput.value = "";
+  renderFeed();
+  showSection('feed', document.querySelector('.nav-item'));
+}
+
+function renderFeed() {
+  postsContainer.innerHTML = "";
+  posts.forEach(post => {
+    postsContainer.appendChild(createPostCard(post));
+  });
+}
+
+function renderMyPosts() {
+  const myPostsContainer = document.getElementById("myPosts");
+  myPostsContainer.innerHTML = "";
+  const myPosts = posts.filter(p => p.author === username);
+  
+  if (myPosts.length === 0) {
+    myPostsContainer.innerHTML = "<p class='text-muted'>You haven't posted anything yet.</p>";
+    return;
+  }
+  
+  myPosts.forEach(post => {
+    myPostsContainer.appendChild(createPostCard(post));
+  });
+}
+
+function createPostCard(post) {
+  const postCard = document.createElement("div");
+  postCard.className = "post-card glass-panel fade-in";
+  postCard.innerHTML = `
+    <div class="post-header">
+      <div class="post-avatar">${post.author.charAt(0).toUpperCase()}</div>
+      <div class="post-meta">
+        <div class="post-author">${post.author}</div>
+        <div class="post-time">${post.time}</div>
+      </div>
+    </div>
+    <div class="post-body">
+      <h4 class="post-title">${post.title}</h4>
+      <p class="post-content">${post.content}</p>
+    </div>
+    <div class="post-actions">
+      <button class="action-btn" onclick="toggleLike(${post.id})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 
+        Like <span id="like-count-${post.id}">${post.likes || 0}</span>
+      </button>
+      <button class="action-btn" onclick="toggleComments(${post.id})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> 
+        Comment <span id="comment-count-${post.id}">${post.comments ? post.comments.length : 0}</span>
+      </button>
+    </div>
+    <div id="comments-section-${post.id}" class="hidden mt-4">
+      <div class="input-group" style="display: flex; flex-direction: row; gap: 8px;">
+         <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." style="flex: 1; margin: 0;">
+         <button class="primary-btn text-small" style="width: auto;" onclick="addComment(${post.id})">Post</button>
+      </div>
+      <div id="comments-list-${post.id}" class="comments-list mt-2" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+    </div>
+  `;
+  return postCard;
+}
+
+function toggleLike(postId) {
+  const post = posts.find(p => p.id === postId);
+  if(post) {
+    post.likes = (post.likes || 0) + 1;
+    document.getElementById(`like-count-${postId}`).innerText = post.likes;
+  }
+}
+
+function toggleComments(postId) {
+  const section = document.getElementById(`comments-section-${postId}`);
+  section.classList.toggle("hidden");
+  if (!section.classList.contains("hidden")) {
+    renderComments(postId);
+  }
+}
+
+function renderComments(postId) {
+  const post = posts.find(p => p.id === postId);
+  const list = document.getElementById(`comments-list-${postId}`);
+  if(!post || !list) return;
+  
+  list.innerHTML = "";
+  (post.comments || []).forEach(c => {
+    const div = document.createElement("div");
+    div.className = "comment-item glass-panel";
+    div.style.padding = "0.75rem";
+    div.style.borderRadius = "0.5rem";
+    div.innerHTML = `<strong>${c.author}</strong>: ${c.text}`;
+    list.appendChild(div);
+  });
+}
+
+function addComment(postId) {
+  const input = document.getElementById(`comment-input-${postId}`);
+  if(!input.value.trim()) return;
+  
+  const post = posts.find(p => p.id === postId);
+  if(post) {
+    if(!post.comments) post.comments = [];
+    post.comments.push({
+      author: username,
+      text: input.value.trim()
+    });
+    input.value = "";
+    document.getElementById(`comment-count-${postId}`).innerText = post.comments.length;
+    renderComments(postId);
+  }
+}
+
+/* CHAT */
+function sendMessage() {
+  if(!messageInput.value.trim()) return;
+  
+  const msgDiv = document.createElement("div");
+  msgDiv.className = "message own-message fade-in";
+  msgDiv.innerHTML = `
+    <div class="msg-content">${messageInput.value}</div>
+  `;
+  
+  chatContainer.appendChild(msgDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  messageInput.value = "";
+  
+  // Simulate reply
+  setTimeout(() => {
+    const replyDiv = document.createElement("div");
+    replyDiv.className = "message other-message fade-in";
+    replyDiv.innerHTML = `
+      <div class="msg-avatar">B</div>
+      <div class="msg-bubble">
+        <div class="msg-author">Bot</div>
+        <div class="msg-content">That's interesting! Tell me more.</div>
+      </div>
+    `;
+    chatContainer.appendChild(replyDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, 1000);
+}
+
+function handleChatKeyPress(e) {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+}
+</script>
+</body>
+</html>
